@@ -4,7 +4,12 @@
   "engines": {
     "node": "6.x"
   },
+  "scripts": {
+    "lint": "standard '**/*.js' '**/*.jsx' 'bin/*'"
+  },
   "main": "app.js",
   "license": "MIT",
-  "dependencies": {}
+  "devDependencies": {
+    "standard": "^8.6.0"
+  }
 }

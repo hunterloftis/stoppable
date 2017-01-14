@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 
-const http = require('http');
+const http = require('http')
 
-const PORT = process.env.PORT || 5000;
-const APP_NAME = process.env.APP_NAME || 'unnamed';
+const PORT = process.env.PORT || 5000
+const APP_NAME = process.env.APP_NAME || 'unnamed'
 
 const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end(`Hello from ${ APP_NAME }!\n`);
-});
+  res.statusCode = 200
+  res.setHeader('Content-Type', 'text/plain')
+  res.end(`Hello from ${APP_NAME}!\n`)
+})
 
-server.listen(PORT, () => console.log(`Listening on ${ PORT }`));
+server.listen(PORT, () => console.log(`Listening on ${PORT}`))

@@ -1,33 +1,10 @@
-# Quickly start new Node.js projects on Heroku
-
-```
-$ git clone https://github.com/hunterloftis/heroku-node-template.git foo
-$ cd foo
-```
-
-## (optional) .bash_profile script
-
-```
-# Easy init of new node projects
-heroku-node() {
-  git clone https://github.com/hunterloftis/heroku-node-template.git "$1"
-  touch "$1/.env"
-}
-```
-
-To use:
-
-```
-$ heroku-node projectname
-```
-
-## Running locally
+# Running locally
 
 ```
 $ heroku local
 ```
 
-## Deploying
+# Deploying
 
 ```
 $ heroku create
@@ -37,3 +14,11 @@ $ heroku open # shows 'unnamed'
 $ heroku config:set APP_NAME=MyName
 $ heroku open # shows 'MyName'
 ```
+
+# Linting
+
+```
+$ yarn run lint
+```
+
+(or *npm run lint* if you're using npm)
