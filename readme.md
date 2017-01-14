@@ -5,7 +5,7 @@ $ git clone https://github.com/hunterloftis/heroku-node-template.git foo
 $ cd foo
 ```
 
-# (optional) .bash_profile script
+## (optional) .bash_profile script
 
 ```
 # Easy init of new node projects
@@ -20,13 +20,13 @@ To use:
 $ heroku-node projectname
 ```
 
-# Running locally
+## Running locally
 
 ```
 $ heroku local
 ```
 
-# Deploying
+## Deploying
 
 ```
 $ heroku create
