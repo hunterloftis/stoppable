@@ -11,6 +11,7 @@ $ cd foo
 # Easy init of new node projects
 heroku-node() {
   git clone https://github.com/hunterloftis/heroku-node-template.git "$1"
+  touch "$1/.env"
 }
 ```
 
