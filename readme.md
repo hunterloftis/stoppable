@@ -1,3 +1,11 @@
+# Installation
+
+```
+$ yarn
+```
+
+(or *npm install* if you're using npm)
+
 # Running locally
 
 ```
