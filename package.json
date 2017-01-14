@@ -2,7 +2,7 @@
   "name": "hello-world",
   "version": "1.0.0",
   "engines": {
-    "node": "6.x"
+    "node": "7.4.x"
   },
   "scripts": {
     "lint": "standard '**/*.js' '**/*.jsx' 'bin/*'"
@@ -10,6 +10,7 @@
   "main": "app.js",
   "license": "MIT",
   "devDependencies": {
+    "nodemon": "^1.11.0",
     "standard": "^8.6.0"
   }
 }

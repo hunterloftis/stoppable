@@ -4,10 +4,10 @@
 $ yarn   # or npm install
 ```
 
-# Running locally
+# Developing locally
 
 ```
-$ heroku local
+$ heroku local -f Procfile.dev
 ```
 
 # Deploying
@@ -15,10 +15,7 @@ $ heroku local
 ```
 $ heroku create
 $ git push heroku master
-$ heroku open # shows 'unnamed'
-
-$ heroku config:set APP_NAME=MyName
-$ heroku open # shows 'MyName'
+$ heroku open
 ```
 
 # Linting
