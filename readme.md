@@ -1,7 +1,7 @@
 # Installing
 
 ```
-$ yarn
+$ yarn   # or npm install
 ```
 
 (or *npm install* if you're using npm)
@@ -26,7 +26,5 @@ $ heroku open # shows 'MyName'
 # Linting
 
 ```
-$ yarn run lint
+$ yarn run lint   # or npm run lint
 ```
-
-(or *npm run lint* if you're using npm)
