@@ -1,0 +1,10 @@
+{
+  "name": "hello-world",
+  "version": "1.0.0",
+  "engines": {
+    "node": "6.x"
+  },
+  "main": "app.js",
+  "license": "MIT",
+  "dependencies": {}
+}
