@@ -4,8 +4,6 @@
 $ yarn   # or npm install
 ```
 
-(or *npm install* if you're using npm)
-
 # Running locally
 
 ```
