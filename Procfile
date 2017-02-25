@@ -1,1 +1,1 @@
-web: node --harmony bin/web
+web: bin/web
