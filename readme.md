@@ -14,7 +14,7 @@ $ heroku open
 
 ```
 $ yarn
-$ heroku local -f Procfile.dev
+$ yarn dev
 ```
 
 # Testing
