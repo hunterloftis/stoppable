@@ -1,16 +1,8 @@
-# Installing
-
-```
-$ yarn   # or npm install
-```
-
-# Developing locally
-
-```
-$ heroku local -f Procfile.dev
-```
-
 # Deploying
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
+Or, from the command line:
 
 ```
 $ heroku create
@@ -18,8 +10,15 @@ $ git push heroku master
 $ heroku open
 ```
 
-# Linting
+# Developing locally
 
 ```
-$ yarn run lint   # or npm run lint
+$ yarn
+$ heroku local -f Procfile.dev
+```
+
+# Testing
+
+```
+$ yarn test
 ```
