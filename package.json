@@ -5,12 +5,18 @@
     "node": "7.6.x"
   },
   "scripts": {
-    "lint": "standard '**/*.js' '**/*.jsx' 'bin/*'"
+    "prettify": "standard --fix 'bin/*' 'lib/**/*.js'",
+    "lint": "standard 'bin/*' 'lib/**/*.js'",
+    "secure": "nsp check",
+    "spec": "jest --silent",
+    "test": "yarn lint && yarn secure && yarn spec"
   },
   "main": "app.js",
   "license": "MIT",
   "devDependencies": {
+    "jest": "^19.0.2",
     "nodemon": "^1.11.0",
+    "nsp": "^2.6.2",
     "standard": "^8.6.0"
   }
 }
