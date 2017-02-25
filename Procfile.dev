@@ -1,1 +1,1 @@
-web: node_modules/.bin/nodemon --watch . --watch bin/* -x "node --harmony" bin/web
+web: node_modules/.bin/nodemon --watch . --watch bin/* bin/web
