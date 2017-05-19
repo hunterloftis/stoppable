@@ -1,7 +1,7 @@
 # Stoppable
 
 ```js
-stoppable(server)
+const server = stoppable(http.createServer(handler))
 server.stop()
 ```
 
@@ -20,7 +20,10 @@ yarn add stoppable
 
 ## Usage
 
-First, decorate the server instance with a `stop` method:
+**Constructor**
+
+Decorates the server instance with a `stop` method.
+Returns the server instance, so can be chained, or can be run as a standalone statement.
 
 ```js
 stoppable(server, grace)
@@ -32,7 +35,9 @@ stoppable(server, grace)
 `grace` defaults to Infinity (don't force-close).
 If you want to immediately kill all sockets you can use a grace of 0.
 
-Then, use `stop` to close the server exactly the way you'd use `close`:
+**server.stop()**
+
+Stops (closes) the server.
 
 ```js
 server.close(callback)
