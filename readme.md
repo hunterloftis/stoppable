@@ -47,8 +47,8 @@ Closes the server.
 
 ## Design decisions
 
-- Monkey patching generally sucks, but in this case it's the nicest APIs. Let's call it "decorating."
-- `grace` could be specified on the stop method, but it's better to match the existing `server.close` API
+- Monkey patching generally sucks, but in this case it's the nicest API. Let's call it "decorating."
+- `grace` could be specified on `stop`, but it's better to match the existing `server.close` API.
 - Clients should be handled respectfully, so we aren't just destroying sockets, we're sending `FIN` packets first.
 - Any solution to this problem requires bookkeeping on every connection and request/response.
 We're doing a minimum of work on these "hot" code paths and delaying as much as possible to the actual `stop` method.
