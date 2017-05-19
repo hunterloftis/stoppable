@@ -1,5 +1,9 @@
 # Stoppable
 
+````
+yarn add stoppable
+```
+
 This module implements Node's `server.close()` in the way you probably
 [expected it to work by default](https://github.com/nodejs/node/issues/2642):
 It stops accepting new connections and closes existing, idle connections (including keep-alives)
