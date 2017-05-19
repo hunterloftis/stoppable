@@ -1,7 +1,8 @@
 # Stoppable
 
-```
-yarn add stoppable
+```js
+stoppable(server)
+server.stop()
 ```
 
 This module implements Node's `server.close()` in the way you probably
@@ -9,10 +10,13 @@ This module implements Node's `server.close()` in the way you probably
 It stops accepting new connections and closes existing, idle connections (including keep-alives)
 without killing requests that are in-flight.
 
-```js
-stoppable(server)
-server.stop()
+## Installation
+
 ```
+yarn add stoppable
+```
+
+(or use npm)
 
 ## Usage
 
