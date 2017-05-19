@@ -20,7 +20,7 @@ yarn add stoppable
 
 ## Usage
 
-**Constructor**
+**constructor**
 
 ```js
 stoppable(server, grace)
