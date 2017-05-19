@@ -119,6 +119,29 @@ describe('http.Server', () => {
         assert.equal(server._pendingSockets.size, 0)
       })
     })
+    describe('with requests in-flight', () => {
+      it('closes their sockets once they finish', async () => {
+        const server = http.createServer((req, res) => {
+          const delay = parseInt(req.url.slice(1), 10)
+          res.writeHead(200)
+          res.write('hello')
+          setTimeout(() => res.end('world'), delay)
+        })
+        stoppable(server)
+        server.listen(8000)
+        await a.event(server, 'listening')
+        const start = Date.now()
+        const res = await Promise.all([
+          request('http://localhost:8000/250').agent(new http.Agent({ keepAlive: true })),
+          request('http://localhost:8000/500').agent(new http.Agent({ keepAlive: true }))
+        ])
+        server.stop()
+        const bodies = await Promise.all(res.map(r => r.text()))
+        await a.event(server, 'close')
+        assert.equal(bodies[0], 'helloworld')
+        assert.closeTo(Date.now() - start, 500, 50)
+      })
+    })
   })
 })
 
