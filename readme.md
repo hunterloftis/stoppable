@@ -22,12 +22,12 @@ yarn add stoppable
 
 **Constructor**
 
-Decorates the server instance with a `stop` method.
-Returns the server instance, so can be chained, or can be run as a standalone statement.
-
 ```js
 stoppable(server, grace)
 ```
+
+Decorates the server instance with a `stop` method.
+Returns the server instance, so can be chained, or can be run as a standalone statement.
 
 - server: Any HTTP or HTTPS Server instance
 - grace: Milliseconds to wait before force-closing connections
@@ -35,12 +35,12 @@ stoppable(server, grace)
 `grace` defaults to Infinity (don't force-close).
 If you want to immediately kill all sockets you can use a grace of 0.
 
-**server.stop()**
-
-Stops (closes) the server.
+**stop()**
 
 ```js
-server.close(callback)
+server.stop(callback)
 ```
+
+Closes the server.
 
 - callback: passed along to the existing `server.close` function to auto-register a 'close' event
