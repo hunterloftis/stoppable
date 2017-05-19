@@ -1,6 +1,6 @@
 # Stoppable
 
-````
+```
 yarn add stoppable
 ```
 
