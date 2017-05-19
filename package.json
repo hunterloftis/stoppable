@@ -1,5 +1,5 @@
 {
-  "name": "hello-world",
+  "name": "stoppable",
   "version": "1.0.0",
   "engines": {
     "node": "7.6.x"
@@ -8,18 +8,23 @@
   "scripts": {
     "lint": "standard --fix 'lib/**/*.js'",
     "secure": "nsp check",
-    "spec": "nyc --check-coverage --lines 100 --functions 100 --branches 100 mocha --bail test/*.test.js",
+    "spec": "nyc --check-coverage mocha --bail test/*.test.js",
     "test": "yarn lint && yarn secure && yarn spec",
     "coverage": "nyc --reporter html mocha --bail test/*.test.js && open coverage/index.html",
     "docs": "documentation build -f html -g -o docs"
   },
-  "main": "lib/index.js",
+  "main": "lib/stoppable.js",
   "license": "MIT",
   "devDependencies": {
+    "chai": "^3.5.0",
     "documentation": "^4.0.0-rc.1",
     "mocha": "^3.4.1",
     "nsp": "^2.6.2",
     "nyc": "^10.3.2",
+    "requisition": "^1.7.0",
     "standard": "^8.6.0"
+  },
+  "dependencies": {
+    "awaiting": "^2.2.0"
   }
 }
