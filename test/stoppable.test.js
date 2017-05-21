@@ -6,6 +6,8 @@ const request = require('requisition')
 const assert = require('chai').assert
 const fs = require('fs')
 const stoppable = require('..')
+const child = require('child_process')
+const path = require('path')
 
 describe('http.Server', () => {
   describe('.close()', () => {
@@ -140,6 +142,19 @@ describe('http.Server', () => {
         await a.event(server, 'close')
         assert.equal(bodies[0], 'helloworld')
         assert.closeTo(Date.now() - start, 500, 50)
+      })
+    })
+    describe('with in-flights finishing before grace period ends', () => {
+      it('exits immediately', async () => {
+        const file = path.join(__dirname, 'server.js')
+        const server = child.spawn('node', [file, '500'])
+        await a.event(server.stdout, 'data')
+        const start = Date.now()
+        const res = await request('http://localhost:8000/250').agent(new http.Agent({ keepAlive: true }))
+        const body = await res.text()
+        const code = await a.event(server, 'close')
+        assert.equal(body, 'helloworld')
+        assert.closeTo(Date.now() - start, 250, 50)
       })
     })
   })
