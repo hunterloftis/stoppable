@@ -55,3 +55,61 @@ Closes the server.
 - Clients should be handled respectfully, so we aren't just destroying sockets, we're sending `FIN` packets first.
 - Any solution to this problem requires bookkeeping on every connection and request/response.
 We're doing a minimum of work on these "hot" code paths and delaying as much as possible to the actual `stop` method.
+
+## Performance
+
+There's no way to provide this functionality without bookkeeping on connection, disconnection, request, and response.
+However, Stoppable strives to do minimal work in hot code paths and to use optimal data structures.
+
+I'd be interested to see real-world performance benchmarks;
+the simple loopback artillery benchmark included in the lib shows very little overhead from using a stoppable server:
+
+### Without Stoppable
+
+```
+  Scenarios launched:  10000
+  Scenarios completed: 10000
+  Requests completed:  10000
+  RPS sent: 939.85
+  Request latency:
+    min: 0.5
+    max: 51.3
+    median: 2.1
+    p95: 3.7
+    p99: 15.3
+  Scenario duration:
+    min: 1
+    max: 60.7
+    median: 3.6
+    p95: 7.6
+    p99: 19
+  Scenario counts:
+    0: 10000 (100%)
+  Codes:
+    200: 10000
+```
+
+### With Stoppable
+
+```
+  Scenarios launched:  10000
+  Scenarios completed: 10000
+  Requests completed:  10000
+  RPS sent: 940.73
+  Request latency:
+    min: 0.5
+    max: 43.4
+    median: 2.1
+    p95: 3.8
+    p99: 15.5
+  Scenario duration:
+    min: 1.1
+    max: 57
+    median: 3.7
+    p95: 8
+    p99: 19.4
+  Scenario counts:
+    0: 10000 (100%)
+  Codes:
+    200: 10000
+```

@@ -11,11 +11,14 @@
     "spec": "nyc --check-coverage mocha --bail test/*.test.js",
     "test": "yarn lint && yarn secure && yarn spec",
     "coverage": "nyc --reporter html mocha --bail test/*.test.js && open coverage/index.html",
-    "docs": "documentation build -f html -g -o docs"
+    "docs": "documentation build -f html -g -o docs",
+    "perf:baseline": "node test/performance.js & sleep 2 && artillery quick -d 10 -r 1000 -o /dev/null -k http://localhost:8000",
+    "perf:stoppable": "node test/performance.js 1 & sleep 2 && artillery quick -d 10 -r 1000 -o /dev/null -k http://localhost:8000"
   },
   "main": "lib/stoppable.js",
   "license": "MIT",
   "devDependencies": {
+    "artillery": "^1.6.0-2",
     "chai": "^3.5.0",
     "documentation": "^4.0.0-rc.1",
     "mocha": "^3.4.1",
