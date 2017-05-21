@@ -1,13 +1,16 @@
 # Stoppable
 
+Node's `server.close()` the way you probably
+[expected it to work by default](https://github.com/nodejs/node/issues/2642).
+
+[![Build Status](https://travis-ci.org/hunterloftis/stoppable.svg?branch=master)](https://travis-ci.org/hunterloftis/stoppable)
+
 ```js
 const server = stoppable(http.createServer(handler))
 server.stop()
 ```
 
-This module implements Node's `server.close()` in the way you probably
-[expected it to work by default](https://github.com/nodejs/node/issues/2642):
-It stops accepting new connections and closes existing, idle connections (including keep-alives)
+Stoppable stops accepting new connections and closes existing, idle connections (including keep-alives)
 without killing requests that are in-flight.
 
 ## Installation
