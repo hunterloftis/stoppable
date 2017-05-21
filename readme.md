@@ -8,10 +8,10 @@ const server = stoppable(http.createServer(handler))
 server.stop()
 ```
 
-[![Build Status](https://travis-ci.org/hunterloftis/stoppable.svg?branch=master)](https://travis-ci.org/hunterloftis/stoppable)
-
 Stoppable stops accepting new connections and closes existing, idle connections (including keep-alives)
 without killing requests that are in-flight.
+
+[![Build Status](https://travis-ci.org/hunterloftis/stoppable.svg?branch=master)](https://travis-ci.org/hunterloftis/stoppable)
 
 ## Installation
 
