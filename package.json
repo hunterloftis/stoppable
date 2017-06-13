@@ -2,7 +2,7 @@
   "name": "stoppable",
   "version": "1.0.3",
   "engines": {
-    "node": ">=7.6.0"
+    "node": ">=6"
   },
   "keywords": [],
   "scripts": {
