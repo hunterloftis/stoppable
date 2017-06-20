@@ -52,6 +52,7 @@ describe('http.Server', () => {
   describe('.stop()', () => {
     describe('without keep-alive connections', () => {
       let closed = 0
+      let gracefully = false
       it('stops accepting new connections', async () => {
         const server = stoppable(http.createServer((req, res) => res.end('hello')))
         server.on('close', () => closed++)
@@ -60,16 +61,22 @@ describe('http.Server', () => {
         const res1 = await request('http://localhost:8000').agent(new http.Agent())
         const text1 = await res1.text()
         assert.equal(text1, 'hello')
-        server.stop()
+        server.stop((e, g) => {
+          gracefully = g
+        })
         const err = await a.failure(request('http://localhost:8000').agent(new http.Agent()))
         assert.match(err.message, /ECONNREFUSED/)
       })
       it('closes', () => {
         assert.equal(closed, 1)
       })
+      it('gracefully', () => {
+        assert.isOk(gracefully)
+      })
     })
     describe('with keep-alive connections', () => {
       let closed = 0
+      let gracefully = false
       let server
       it('stops accepting new connections', async () => {
         server = http.createServer((req, res) => res.end('hello'))
@@ -80,12 +87,17 @@ describe('http.Server', () => {
         const res1 = await request('http://localhost:8000').agent(new http.Agent({ keepAlive: true }))
         const text1 = await res1.text()
         assert.equal(text1, 'hello')
-        server.stop()
+        server.stop((e, g) => {
+          gracefully = g
+        })
         const err = await a.failure(request('http://localhost:8000').agent(new http.Agent({ keepAlive: true })))
         assert.match(err.message, /ECONNREFUSED/)
       })
       it('closes', () => {
         assert.equal(closed, 1)
+      })
+      it('gracefully', () => {
+        assert.isOk(gracefully)
       })
       it('empties all sockets once closed', () => {
         assert.equal(server._pendingSockets.size, 0)
@@ -97,6 +109,7 @@ describe('http.Server', () => {
       })
     })
     describe('with a 0.5s grace period', () => {
+      let gracefully = true
       let server
       it('kills connections after 0.5s', async () => {
         server = http.createServer((req, res) => {
@@ -111,15 +124,21 @@ describe('http.Server', () => {
           request('http://localhost:8000').agent(new http.Agent({ keepAlive: true }))
         ])
         const start = Date.now()
-        server.stop()
+        server.stop((e, g) => {
+          gracefully = g
+        })
         await a.event(server, 'close')
         assert.closeTo(Date.now() - start, 500, 50)
+      })
+      it('gracefully', () => {
+        assert.isNotOk(gracefully)
       })
       it('empties all sockets', () => {
         assert.equal(server._pendingSockets.size, 0)
       })
     })
     describe('with requests in-flight', () => {
+      let gracefully = false
       it('closes their sockets once they finish', async () => {
         const server = http.createServer((req, res) => {
           const delay = parseInt(req.url.slice(1), 10)
@@ -135,11 +154,16 @@ describe('http.Server', () => {
           request('http://localhost:8000/250').agent(new http.Agent({ keepAlive: true })),
           request('http://localhost:8000/500').agent(new http.Agent({ keepAlive: true }))
         ])
-        server.stop()
+        server.stop((e, g) => {
+          gracefully = g
+        })
         const bodies = await Promise.all(res.map(r => r.text()))
         await a.event(server, 'close')
         assert.equal(bodies[0], 'helloworld')
         assert.closeTo(Date.now() - start, 500, 100)
+      })
+      it('gracefully', () => {
+        assert.isOk(gracefully)
       })
     })
     describe('with in-flights finishing before grace period ends', () => {
@@ -161,6 +185,7 @@ describe('https.Server', () => {
   describe('.stop()', () => {
     describe('with keep-alive connections', () => {
       let closed = 0
+      let gracefully = false
       it('stops accepting new connections', async () => {
         const server = https.createServer({
           key: fs.readFileSync('test/fixture.key'),
@@ -176,7 +201,9 @@ describe('https.Server', () => {
         }))
         const text1 = await res1.text()
         assert.equal(text1, 'hello')
-        server.stop()
+        server.stop((e, g) => {
+          gracefully = g
+        })
         const err = await a.failure(request('https://localhost:8000').agent(new https.Agent({
           keepAlive: true,
           rejectUnauthorized: false
@@ -185,6 +212,9 @@ describe('https.Server', () => {
       })
       it('closes', () => {
         assert.equal(closed, 1)
+      })
+      it('gracefully', () => {
+        assert.isOk(gracefully)
       })
     })
     describe('with a 0.5s grace period', () => {

@@ -53,7 +53,8 @@ server.stop(callback)
 
 Closes the server.
 
-- callback: passed along to the existing `server.close` function to auto-register a 'close' event
+- callback: passed along to the existing `server.close` function to auto-register a 'close' event.
+The first agrument is an error, and the second argument is a boolean that indicates whether it stopped gracefully.
 
 ## Design decisions
 
