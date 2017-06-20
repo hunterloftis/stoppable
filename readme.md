@@ -48,11 +48,11 @@ Closes the server.
 
 - callback: passed along to the existing `server.close` function to auto-register a 'close' event
 
-## Manual operations on counters
+## Manual operations on pending counts
 
-It's also possible to manually increment and decrement a counter for a specific socket.
+It's also possible to manually increment and decrement a pending count of a specific socket.
 This can be helpful when you want to lock the server while doing some jobs.
-For example, you can increment a counter when you receive a request via Websocket
+For example, you can increment a pending count when you receive a request via Websocket
 and decrement it once you have processed it.
 
 **stoppable.increment**
@@ -61,9 +61,9 @@ and decrement it once you have processed it.
 server.stoppable.increment(socket)
 ```
 
-Increment a counter for a specified socket. This method returns a new counter.
+Increment a pending count of a specified socket. This method returns the new pending count.
 
-- socket: A socket you want to increment a counter for
+- socket: A socket of which you want to increment a pending count
 
 **stoppable.decrement**
 
@@ -71,12 +71,12 @@ Increment a counter for a specified socket. This method returns a new counter.
 server.stoppable.decrement(socket, callback)
 ```
 
-Decrement a counter for a specified socket. If the counter becomes 0 and the server
+Decrement a pending count of a specified socket. If the pending count becomes 0 and the server
 has already been stopped, it closes the socket. When you specify a callback, it calls
 the callback instead of closing the socket. You can do some cleanups in this callback,
-but it's your responsibility to close the socket. This method returns a new counter.
+but it's your responsibility to close the socket. This method returns the new pending count.
 
-- socket: A socket you want to decrement a counter for
+- socket: A socket of which you want to decrement a pending count
 - callback: A cleanup function. The first argument is a socket to be closed.
 
 ## Design decisions
