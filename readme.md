@@ -48,6 +48,37 @@ Closes the server.
 
 - callback: passed along to the existing `server.close` function to auto-register a 'close' event
 
+## Manual operations on counters
+
+It's also possible to manually increment and decrement a counter for a specific socket.
+This can be helpful when you want to lock the server while doing some jobs.
+For example, you can increment a counter when you receive a request via Websocket
+and decrement it once you have processed it.
+
+**stoppable.increment**
+
+```js
+server.stoppable.increment(socket)
+```
+
+Increment a counter for a specified socket. This method returns a new counter.
+
+- socket: A socket you want to increment a counter for
+
+**stoppable.decrement**
+
+```js
+server.stoppable.decrement(socket, callback)
+```
+
+Decrement a counter for a specified socket. If the counter becomes 0 and the server
+has already been stopped, it closes the socket. When you specify a callback, it calls
+the callback instead of closing the socket. You can do some cleanups in this callback,
+but it's your responsibility to close the socket. This method returns a new counter.
+
+- socket: A socket you want to decrement a counter for
+- callback: A cleanup function. The first argument is a socket to be closed.
+
 ## Design decisions
 
 - Monkey patching generally sucks, but in this case it's the nicest API. Let's call it "decorating."
