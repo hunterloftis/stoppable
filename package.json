@@ -5,6 +5,7 @@
     "node": ">=7.6.0"
   },
   "keywords": [],
+  "repository": "hunterloftis/stoppable",
   "scripts": {
     "lint": "standard --fix 'lib/**/*.js'",
     "secure": "nsp check",
