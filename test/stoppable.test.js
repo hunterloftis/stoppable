@@ -50,23 +50,21 @@ describe('http.Server', () => {
   })
   describe('.stop()', () => {
     describe('without keep-alive connections', () => {
-      describe('without keep-alive connections', () => {
-        let closed = 0
-        it('stops accepting new connections', async () => {
-          const server = stoppable(http.createServer((req, res) => res.end('hello')))
-          server.on('close', () => closed++)
-          server.listen(8000)
-          await a.event(server, 'listening')
-          const res1 = await request('http://localhost:8000').agent(new http.Agent())
-          const text1 = await res1.text()
-          assert.equal(text1, 'hello')
-          server.stop()
-          const err = await a.failure(request('http://localhost:8000').agent(new http.Agent()))
-          assert.match(err.message, /ECONNREFUSED/)
-        })
-        it('closes', () => {
-          assert.equal(closed, 1)
-        })
+      let closed = 0
+      it('stops accepting new connections', async () => {
+        const server = stoppable(http.createServer((req, res) => res.end('hello')))
+        server.on('close', () => closed++)
+        server.listen(8000)
+        await a.event(server, 'listening')
+        const res1 = await request('http://localhost:8000').agent(new http.Agent())
+        const text1 = await res1.text()
+        assert.equal(text1, 'hello')
+        server.stop()
+        const err = await a.failure(request('http://localhost:8000').agent(new http.Agent()))
+        assert.match(err.message, /ECONNREFUSED/)
+      })
+      it('closes', () => {
+        assert.equal(closed, 1)
       })
     })
     describe('with keep-alive connections', () => {
