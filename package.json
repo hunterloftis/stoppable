@@ -2,7 +2,7 @@
   "name": "stoppable",
   "version": "1.0.3",
   "engines": {
-    "node": ">=6"
+    "node": ">=4"
   },
   "keywords": [],
   "repository": "hunterloftis/stoppable",
