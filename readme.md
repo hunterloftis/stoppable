@@ -1,7 +1,12 @@
 # Stoppable
 
-Node's `server.close()` the way you probably
-[expected it to work by default](https://github.com/nodejs/node/issues/2642).
+> Node's `server.close()` the way you probably [expected it to work by default](https://github.com/nodejs/node/issues/2642).
+
+## Requirements
+
+- Node.js v6+
+
+Node.js v4.x is *unofficially* supported.
 
 ```js
 const server = stoppable(http.createServer(handler))
@@ -15,7 +20,7 @@ without killing requests that are in-flight.
 
 ## Installation
 
-```
+```bash
 yarn add stoppable
 ```
 
@@ -66,7 +71,7 @@ the simple loopback artillery benchmark included in the lib shows very little ov
 
 ### Without Stoppable
 
-```
+```plain
   Scenarios launched:  10000
   Scenarios completed: 10000
   Requests completed:  10000
@@ -91,7 +96,7 @@ the simple loopback artillery benchmark included in the lib shows very little ov
 
 ### With Stoppable
 
-```
+```plain
   Scenarios launched:  10000
   Scenarios completed: 10000
   Requests completed:  10000
@@ -113,3 +118,7 @@ the simple loopback artillery benchmark included in the lib shows very little ov
   Codes:
     200: 10000
 ```
+
+## License
+
+MIT
