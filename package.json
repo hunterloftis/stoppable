@@ -29,21 +29,19 @@
     "spec": "nyc --check-coverage mocha --bail test/*.test.js",
     "test": "yarn lint && yarn secure && yarn spec",
     "coverage": "nyc --reporter html mocha --bail test/*.test.js && open coverage/index.html",
-    "docs": "documentation build -f html -g -o docs",
     "perf:baseline": "node test/performance.js & sleep 2 && artillery quick -d 10 -r 1000 -o /dev/null -k http://localhost:8000",
     "perf:stoppable": "node test/performance.js 1 & sleep 2 && artillery quick -d 10 -r 1000 -o /dev/null -k http://localhost:8000"
   },
   "main": "lib/stoppable.js",
   "license": "MIT",
   "devDependencies": {
-    "artillery": "^1.6.0-2",
-    "awaiting": "^2.2.0",
-    "chai": "^3.5.0",
-    "documentation": "^4.0.0-rc.1",
-    "mocha": "^3.4.1",
-    "nsp": "^2.6.2",
-    "nyc": "^10.3.2",
+    "artillery": "^1.6.0-15",
+    "awaiting": "^3.0.0",
+    "chai": "^4.1.2",
+    "mocha": "^5.0.5",
+    "nsp": "^3.2.1",
+    "nyc": "^11.6.0",
     "requisition": "^1.7.0",
-    "standard": "^8.6.0"
+    "standard": "^11.0.1"
   }
 }
