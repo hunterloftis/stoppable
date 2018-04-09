@@ -4,8 +4,25 @@
   "engines": {
     "node": ">=4"
   },
-  "keywords": [],
-  "repository": "hunterloftis/stoppable",
+  "keywords": [
+    "server",
+    "net",
+    "connect",
+    "socket",
+    "connection",
+    "stop",
+    "close",
+    "disconnect",
+    "disconnection",
+    "http",
+    "https",
+    "tcp"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hunterloftis/stoppable.git"
+  },
+  "homepage": "https://github.com/hunterloftis/stoppable",
   "scripts": {
     "lint": "standard --fix 'lib/**/*.js'",
     "secure": "nsp check",
