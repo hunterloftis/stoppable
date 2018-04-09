@@ -4,6 +4,8 @@
 
 > Node's `server.close()` the way you probably [expected it to work by default](https://github.com/nodejs/node/issues/2642).
 
+## Summary
+
 ```js
 const server = stoppable(http.createServer(handler))
 server.stop()
