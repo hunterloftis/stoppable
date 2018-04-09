@@ -139,7 +139,7 @@ describe('http.Server', () => {
         const bodies = await Promise.all(res.map(r => r.text()))
         await a.event(server, 'close')
         assert.equal(bodies[0], 'helloworld')
-        assert.closeTo(Date.now() - start, 500, 50)
+        assert.closeTo(Date.now() - start, 500, 100)
       })
     })
     describe('with in-flights finishing before grace period ends', () => {
@@ -152,7 +152,7 @@ describe('http.Server', () => {
         const body = await res.text()
         const code = await a.event(server, 'close')
         assert.equal(body, 'helloworld')
-        assert.closeTo(Date.now() - start, 250, 50)
+        assert.closeTo(Date.now() - start, 250, 100)
       })
     })
   })
