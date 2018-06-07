@@ -188,5 +188,70 @@ describe('https.Server', () => {
         assert.equal(closed, 1)
       })
     })
+    describe('with a 0.5s grace period', () => {
+      let server
+      it('kills connections after 0.5s', async () => {
+        server = https.createServer({
+          key: fs.readFileSync('test/fixture.key'),
+          cert: fs.readFileSync('test/fixture.cert')
+        }, (req, res) => {
+          res.writeHead(200)
+          res.write('hi')
+        })
+        stoppable(server, 500)
+        server.listen(8000)
+        await a.event(server, 'listening')
+        const res = await Promise.all([
+          request('https://localhost:8000').agent(new https.Agent({
+            keepAlive: true,
+            rejectUnauthorized: false
+          })),
+          request('https://localhost:8000').agent(new https.Agent({
+            keepAlive: true,
+            rejectUnauthorized: false
+          }))
+        ])
+        const bodies = res.map(r => r.text())
+        const start = Date.now()
+        server.stop()
+        await a.event(server, 'close')
+        assert.closeTo(Date.now() - start, 500, 50)
+      })
+      it('empties all sockets', () => {
+        assert.equal(server._pendingSockets.size, 0)
+      })
+    })
+    describe('with requests in-flight', () => {
+      it('closes their sockets once they finish', async () => {
+        const server = https.createServer({
+          key: fs.readFileSync('test/fixture.key'),
+          cert: fs.readFileSync('test/fixture.cert')
+        }, (req, res) => {
+          const delay = parseInt(req.url.slice(1), 10)
+          res.writeHead(200)
+          res.write('hello')
+          setTimeout(() => res.end('world'), delay)
+        })
+        stoppable(server)
+        server.listen(8000)
+        await a.event(server, 'listening')
+        const start = Date.now()
+        const res = await Promise.all([
+          request('https://localhost:8000/250').agent(new https.Agent({
+            keepAlive: true,
+            rejectUnauthorized: false
+          })),
+          request('https://localhost:8000/500').agent(new https.Agent({
+            keepAlive: true,
+            rejectUnauthorized: false
+          }))
+        ])
+        server.stop()
+        const bodies = await Promise.all(res.map(r => r.text()))
+        await a.event(server, 'close')
+        assert.equal(bodies[0], 'helloworld')
+        assert.closeTo(Date.now() - start, 500, 100)
+      })
+    })
   })
 })
