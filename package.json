@@ -2,7 +2,8 @@
   "name": "stoppable",
   "version": "1.0.6",
   "engines": {
-    "node": ">=4"
+    "node": ">=4",
+    "npm": ">=6"
   },
   "keywords": [
     "server",
@@ -25,10 +26,9 @@
   "homepage": "https://github.com/hunterloftis/stoppable",
   "scripts": {
     "lint": "standard --fix 'lib/**/*.js'",
-    "secure": "nsp check",
     "spec": "nyc --check-coverage mocha --bail test/*.test.js",
-    "test": "yarn lint && yarn secure && yarn spec",
     "coverage": "nyc --reporter html mocha --bail test/*.test.js && open coverage/index.html",
+    "test": "npm run lint && npm audit && npm run spec",
     "perf:baseline": "node test/performance.js & sleep 2 && artillery quick -d 10 -r 1000 -o /dev/null -k http://localhost:8000",
     "perf:stoppable": "node test/performance.js 1 & sleep 2 && artillery quick -d 10 -r 1000 -o /dev/null -k http://localhost:8000"
   },
@@ -39,7 +39,6 @@
     "awaiting": "^3.0.0",
     "chai": "^4.1.2",
     "mocha": "^5.0.5",
-    "nsp": "^3.2.1",
     "nyc": "^11.6.0",
     "requisition": "^1.7.0",
     "standard": "^11.0.1"
