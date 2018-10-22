@@ -19,6 +19,9 @@
     "https",
     "tcp"
   ],
+  "files": [
+    "lib"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hunterloftis/stoppable.git"
