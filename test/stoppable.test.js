@@ -1,6 +1,7 @@
+/* eslint-env mocha */
+
 const http = require('http')
 const https = require('https')
-const parse = require('url').parse
 const a = require('awaiting')
 const request = require('requisition')
 const assert = require('chai').assert
@@ -105,11 +106,10 @@ describe('http.Server', () => {
         stoppable(server, 500)
         server.listen(8000)
         await a.event(server, 'listening')
-        const res = await Promise.all([
+        await Promise.all([
           request('http://localhost:8000').agent(new http.Agent({ keepAlive: true })),
           request('http://localhost:8000').agent(new http.Agent({ keepAlive: true }))
         ])
-        const bodies = res.map(r => r.text())
         const start = Date.now()
         server.stop()
         await a.event(server, 'close')
@@ -150,7 +150,6 @@ describe('http.Server', () => {
         const start = Date.now()
         const res = await request('http://localhost:8000/250').agent(new http.Agent({ keepAlive: true }))
         const body = await res.text()
-        const code = await a.event(server, 'close')
         assert.equal(body, 'helloworld')
         assert.closeTo(Date.now() - start, 250, 100)
       })
@@ -201,7 +200,7 @@ describe('https.Server', () => {
         stoppable(server, 500)
         server.listen(8000)
         await a.event(server, 'listening')
-        const res = await Promise.all([
+        await Promise.all([
           request('https://localhost:8000').agent(new https.Agent({
             keepAlive: true,
             rejectUnauthorized: false
@@ -211,7 +210,6 @@ describe('https.Server', () => {
             rejectUnauthorized: false
           }))
         ])
-        const bodies = res.map(r => r.text())
         const start = Date.now()
         server.stop()
         await a.event(server, 'close')
