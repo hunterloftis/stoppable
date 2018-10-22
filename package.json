@@ -25,10 +25,10 @@
   },
   "homepage": "https://github.com/hunterloftis/stoppable",
   "scripts": {
-    "lint": "standard --fix 'lib/**/*.js'",
-    "spec": "nyc --check-coverage mocha --bail test/*.test.js",
-    "coverage": "nyc --reporter html mocha --bail test/*.test.js && open coverage/index.html",
+    "lint": "standard --fix \"lib/**/*.js\" \"test/**/*.js\"",
+    "spec": "nyc --check-coverage mocha --bail \"test/*.test.js\"",
     "test": "npm run lint && npm audit && npm run spec",
+    "coverage": "nyc mocha --bail \"test/*.test.js\"",
     "perf:baseline": "node test/performance.js & sleep 2 && artillery quick -d 10 -r 1000 -o /dev/null -k http://localhost:8000",
     "perf:stoppable": "node test/performance.js 1 & sleep 2 && artillery quick -d 10 -r 1000 -o /dev/null -k http://localhost:8000"
   },
