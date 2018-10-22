@@ -4,3 +4,19 @@ node_js:
   - '10'
   - '9'
   - '8'
+before_install: |
+  [[ ! -x ~/npm/node_modules/.bin/npm ]] && {
+    # caching feature creates `~/npm` for us
+    cd ~/npm && npm install npm@^6
+    cd -
+  } || true
+  # avoids bugs around https://github.com/travis-ci/travis-ci/issues/5092
+  export PATH=~/npm/node_modules/.bin:$PATH
+# this avoids compilation in most cases (where we don't need it)
+install: npm ci
+cache:
+  directories:
+    - ~/.npm # cache npm's cache
+    - ~/npm # cache latest npm
+notifications:
+  email: false
