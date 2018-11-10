@@ -115,6 +115,13 @@ Object.keys(schemes).forEach(schemeName => {
         it('gracefully', () => {
           assert.isOk(gracefully)
         })
+
+        it('should error if already closed', function (done) {
+          server.stop(e => {
+            assert.propertyVal(e, 'code', 'ERR_SERVER_NOT_RUNNING')
+            done()
+          })
+        })
       })
 
       describe('with keep-alive connections', () => {
@@ -154,6 +161,100 @@ Object.keys(schemes).forEach(schemeName => {
         it('registers the "close" callback', (done) => {
           server.listen(PORT)
           server.stop(done)
+        })
+
+        it('should error if already closed', function (done) {
+          server.stop(e => {
+            assert.propertyVal(e, 'code', 'ERR_SERVER_NOT_RUNNING')
+            done()
+          })
+        })
+      })
+    })
+
+    describe('.stopAsync()', function () {
+      describe('without keep-alive connections', function () {
+        let gracefully = false
+        let server
+
+        beforeEach(async function () {
+          server = stoppable(scheme.server())
+          server.listen(PORT)
+          await a.event(server, 'listening')
+          const res1 =
+              await request(`${schemeName}://localhost:${PORT}`).agent(scheme.agent())
+          const text1 = await res1.text()
+          assert.equal(text1, 'hello')
+          gracefully = (await Promise.all([
+            server.stopAsync(),
+            a.event(server, 'close')
+          ]))
+            .shift()
+        })
+
+        it('stops accepting new connections', async () => {
+          const err = await a.failure(
+            request(`${schemeName}://localhost:${PORT}`).agent(scheme.agent()))
+          assert.match(err.message, /ECONNREFUSED/)
+        })
+
+        it('gracefully', () => {
+          assert.isOk(gracefully)
+        })
+
+        it('should reject if already closed', async function () {
+          const err = await a.failure(server.stopAsync())
+          assert.propertyVal(err, 'code', 'ERR_SERVER_NOT_RUNNING')
+        })
+      })
+
+      describe('with keep-alive connections', () => {
+        let gracefully = false
+        let server
+        let result
+
+        beforeEach(async function () {
+          server = stoppable(scheme.server())
+          server.listen(PORT)
+          await a.event(server, 'listening')
+          result = await request(`${schemeName}://localhost:${PORT}`)
+            .agent(scheme.agent({keepAlive: true}))
+          gracefully = (await Promise.all([
+            server.stopAsync(),
+            a.event(server, 'close')
+          ]))
+            .shift()
+        })
+
+        it('returns the correct response', async function () {
+          const text1 = await result.text()
+          assert.equal(text1, 'hello')
+        })
+
+        it('stops accepting new connections', async () => {
+          const err = await a.failure(request(`${schemeName}://localhost:${PORT}`)
+            .agent(scheme.agent({ keepAlive: true })))
+          assert.match(err.message, /ECONNREFUSED/)
+        })
+
+        it('gracefully', () => {
+          assert.isOk(gracefully)
+        })
+
+        it('empties all sockets once closed', async () => {
+          await a.failure(request(`${schemeName}://localhost:${PORT}`)
+            .agent(scheme.agent({ keepAlive: true })))
+          assert.equal(server._pendingSockets.size, 0)
+        })
+
+        it('registers the "close" callback', async () => {
+          server.listen(PORT)
+          await server.stopAsync()
+        })
+
+        it('should reject if already closed', async function () {
+          const err = await a.failure(server.stopAsync())
+          assert.propertyVal(err, 'code', 'ERR_SERVER_NOT_RUNNING')
         })
       })
     })
