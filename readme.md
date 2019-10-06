@@ -56,6 +56,16 @@ Closes the server.
 - callback: passed along to the existing `server.close` function to auto-register a 'close' event.
 The first agrument is an error, and the second argument is a boolean that indicates whether it stopped gracefully.
 
+**stopAsync()**
+
+```js
+await server.stopAsync()
+```
+
+Closes the server, `Promise`-style.
+
+Resolves with a boolean that indicates whether it stopped gracefully.
+
 ## Design decisions
 
 - Monkey patching generally sucks, but in this case it's the nicest API. Let's call it "decorating."
