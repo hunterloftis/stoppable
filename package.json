@@ -32,8 +32,8 @@
     "spec": "nyc --check-coverage mocha --bail \"test/*.test.js\"",
     "test": "npm run lint && npm audit --omit=dev && npm run spec",
     "coverage": "nyc mocha --bail \"test/*.test.js\"",
-    "perf:baseline": "node test/performance.js & sleep 2 && artillery quick -d 10 -r 1000 -o /dev/null -k http://localhost:8000",
-    "perf:stoppable": "node test/performance.js 1 & sleep 2 && artillery quick -d 10 -r 1000 -o /dev/null -k http://localhost:8000"
+    "perf:baseline": "node test/performance.js & sleep 2 && artillery quick -c 10 -n 1000 -o /dev/null -k http://localhost:8000",
+    "perf:stoppable": "node test/performance.js 1 & sleep 2 && artillery quick -c 10 -n 1000 -o /dev/null -k http://localhost:8000"
   },
   "main": "lib/stoppable.js",
   "license": "MIT",
