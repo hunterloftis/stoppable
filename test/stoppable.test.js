@@ -18,7 +18,7 @@ const schemes = {
     server: handler => http.createServer(handler || ((req, res) => res.end('hello')))
   },
   https: {
-    agent: (opts = {}) => https.Agent(Object.assign({rejectUnauthorized: false}, opts)),
+    agent: (opts = {}) => https.Agent(Object.assign({ rejectUnauthorized: false }, opts)),
     server: handler => https.createServer({
       key: fs.readFileSync('test/fixture.key'),
       cert: fs.readFileSync('test/fixture.cert')
@@ -66,13 +66,13 @@ Object.keys(schemes).forEach(schemeName => {
           server.listen(PORT)
           await a.event(server, 'listening')
           const res1 = await request(`${schemeName}://localhost:${PORT}`)
-            .agent(scheme.agent({keepAlive: true}))
+            .agent(scheme.agent({ keepAlive: true }))
           const text1 = await res1.text()
           assert.equal(text1, 'hello')
           server.close()
           const err =
               await a.failure(request(`${schemeName}://localhost:${PORT}`)
-              .agent(scheme.agent({keepAlive: true})))
+                .agent(scheme.agent({ keepAlive: true })))
           assert.match(err.message, /ECONNREFUSED/)
         })
 
@@ -131,7 +131,7 @@ Object.keys(schemes).forEach(schemeName => {
           server.listen(PORT)
           await a.event(server, 'listening')
           const res1 = await request(`${schemeName}://localhost:${PORT}`)
-            .agent(scheme.agent({keepAlive: true}))
+            .agent(scheme.agent({ keepAlive: true }))
           const text1 = await res1.text()
           assert.equal(text1, 'hello')
           server.stop((e, g) => {
@@ -174,9 +174,9 @@ Object.keys(schemes).forEach(schemeName => {
         await a.event(server, 'listening')
         await Promise.all([
           request(`${schemeName}://localhost:${PORT}`)
-            .agent(scheme.agent({keepAlive: true})),
+            .agent(scheme.agent({ keepAlive: true })),
           request(`${schemeName}://localhost:${PORT}`)
-            .agent(scheme.agent({keepAlive: true}))
+            .agent(scheme.agent({ keepAlive: true }))
         ])
         const start = Date.now()
         server.stop((e, g) => {
@@ -214,9 +214,9 @@ Object.keys(schemes).forEach(schemeName => {
         const start = Date.now()
         const res = await Promise.all([
           request(`${schemeName}://localhost:${PORT}/250`)
-            .agent(scheme.agent({keepAlive: true})),
+            .agent(scheme.agent({ keepAlive: true })),
           request(`${schemeName}://localhost:${PORT}/500`)
-            .agent(scheme.agent({keepAlive: true}))
+            .agent(scheme.agent({ keepAlive: true }))
         ])
         server.stop((e, g) => {
           gracefully = g
@@ -241,7 +241,7 @@ Object.keys(schemes).forEach(schemeName => {
           await a.event(server.stdout, 'data')
           const start = Date.now()
           const res = await request(`${schemeName}://localhost:${PORT}/250`)
-            .agent(scheme.agent({keepAlive: true}))
+            .agent(scheme.agent({ keepAlive: true }))
           const body = await res.text()
           assert.equal(body, 'helloworld')
           assert.closeTo(Date.now() - start, 250, 100)
