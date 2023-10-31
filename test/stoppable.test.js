@@ -193,6 +193,33 @@ Object.keys(schemes).forEach(schemeName => {
       it('empties all sockets', () => {
         assert.equal(server._pendingSockets.size, 0)
       })
+
+      describe('with grace period overridden to 0.25 seconds on stop()', () => {
+        it('kills connections after 0.25s', async () => {
+          server.listen(PORT)
+          await a.event(server, 'listening')
+          await Promise.all([
+            request(`${schemeName}://localhost:${PORT}`)
+              .agent(scheme.agent({keepAlive: true})),
+            request(`${schemeName}://localhost:${PORT}`)
+              .agent(scheme.agent({keepAlive: true}))
+          ])
+          const start = Date.now()
+          server.stop(250, (e, g) => {
+            gracefully = g
+          })
+          await a.event(server, 'close')
+          assert.closeTo(Date.now() - start, 250, 50)
+        })
+
+        it('gracefully', () => {
+          assert.isNotOk(gracefully)
+        })
+
+        it('empties all sockets', () => {
+          assert.equal(server._pendingSockets.size, 0)
+        })
+      });
     })
 
     describe('with requests in-flight', () => {
